@@ -445,22 +445,18 @@ def load_robustness():
 @st.cache_resource
 def load_models():
     models = {}
+    svm_ori_path = os.path.join(ASSETS_DIR, "svm_ori.pkl")
+    if not os.path.exists(svm_ori_path):
+        return models  # Files not found (likely on Cloud due to GitHub 100MB limit)
+
     try:
         import joblib
-        models["svm_ori"] = joblib.load(os.path.join(ASSETS_DIR, "svm_ori.pkl"))
+        models["svm_ori"] = joblib.load(svm_ori_path)
         models["svm_noise"] = joblib.load(os.path.join(ASSETS_DIR, "svm_noise.pkl"))
         models["scaler_ori"] = joblib.load(os.path.join(ASSETS_DIR, "scaler_ori.pkl"))
         models["scaler_noise"] = joblib.load(os.path.join(ASSETS_DIR, "scaler_noise.pkl"))
-    except Exception as e:
-        st.warning(f"Model loading issue: {e}")
-        try:
-            import pickle
-            with open(os.path.join(ASSETS_DIR, "svm_ori.pkl"), "rb") as f: models["svm_ori"] = pickle.load(f)
-            with open(os.path.join(ASSETS_DIR, "svm_noise.pkl"), "rb") as f: models["svm_noise"] = pickle.load(f)
-            with open(os.path.join(ASSETS_DIR, "scaler_ori.pkl"), "rb") as f: models["scaler_ori"] = pickle.load(f)
-            with open(os.path.join(ASSETS_DIR, "scaler_noise.pkl"), "rb") as f: models["scaler_noise"] = pickle.load(f)
-        except Exception as e2:
-            st.error(f"Fallback loading also failed: {e2}")
+    except Exception:
+        pass
     return models
 
 def load_asset_image(filename):
@@ -1253,7 +1249,7 @@ def page_inference():
                         progress_bar("Confidence (from SVM decision score)", confidence)
 
                     else:
-                        st.warning(" Models not loaded. Check that PKL files are in dashboard_assets/.")
+                        st.info("ℹ️ Models not loaded. This is expected on the Cloud Demo because the SVM models exceed GitHub's 100MB file size limit. To test Live Inference, please run the app locally with the model files present in the `dashboard_assets/` directory.")
                 except Exception as e:
                     st.error(f"Inference error: {e}")
 
