@@ -6,6 +6,4 @@ opencv-python-headless
 Pillow
 scikit-image
 scikit-learn
-tensorflow-cpu
 joblib
-
