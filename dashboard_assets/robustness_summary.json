@@ -1,0 +1,38 @@
+[
+  {
+    "Scenario":"Scenario 1: Original Model \u2192 Clean Test Data",
+    "Accuracy (%)":99.16,
+    "Recall (%)":98.68,
+    "F1-Score (%)":99.33
+  },
+  {
+    "Scenario":"Scenario 2: Original Model \u2192 Noisy+Denoised Test Data",
+    "Accuracy (%)":60.84,
+    "Recall (%)":38.19,
+    "F1-Score (%)":55.27
+  },
+  {
+    "Scenario":"Scenario 3: Noisy Model \u2192 Clean Test Data",
+    "Accuracy (%)":71.19,
+    "Recall (%)":60.04,
+    "F1-Score (%)":72.53
+  },
+  {
+    "Scenario":"Scenario 4: Noisy Model \u2192 Noisy+Denoised Test Data",
+    "Accuracy (%)":98.6,
+    "Recall (%)":98.45,
+    "F1-Score (%)":98.89
+  },
+  {
+    "Scenario":"Scenario 5a: Original Model \u2192 Zoom+Crop Test Data",
+    "Accuracy (%)":76.0,
+    "Recall (%)":81.25,
+    "F1-Score (%)":81.25
+  },
+  {
+    "Scenario":"Scenario 5b: Noisy Model \u2192 Zoom+Crop Test Data",
+    "Accuracy (%)":76.0,
+    "Recall (%)":78.12,
+    "F1-Score (%)":80.65
+  }
+]
