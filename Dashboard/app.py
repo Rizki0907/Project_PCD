@@ -442,21 +442,34 @@ def load_robustness():
         data = json.load(f)
     return pd.DataFrame(data)
 
-@st.cache_resource
+@st.cache_resource(show_spinner=False)
 def load_models():
     models = {}
-    svm_ori_path = os.path.join(ASSETS_DIR, "svm_ori.pkl")
-    if not os.path.exists(svm_ori_path):
-        return models  # Files not found (likely on Cloud due to GitHub 100MB limit)
+    base_url = "https://github.com/Rizki0907/Project_PCD/releases/download/v1.0.0/"
+    files_to_download = [
+        "svm_ori.pkl", "svm_noise.pkl", "scaler_ori.pkl", "scaler_noise.pkl"
+    ]
+    
+    import urllib.request
+    for filename in files_to_download:
+        path = os.path.join(ASSETS_DIR, filename)
+        if not os.path.exists(path):
+            try:
+                # Provide some visual feedback in the console/logs during download
+                print(f"Downloading {filename} from GitHub Releases...")
+                urllib.request.urlretrieve(base_url + filename, path)
+            except Exception as e:
+                st.error(f"Failed to download {filename}: {e}")
+                return models
 
     try:
         import joblib
-        models["svm_ori"] = joblib.load(svm_ori_path)
+        models["svm_ori"] = joblib.load(os.path.join(ASSETS_DIR, "svm_ori.pkl"))
         models["svm_noise"] = joblib.load(os.path.join(ASSETS_DIR, "svm_noise.pkl"))
         models["scaler_ori"] = joblib.load(os.path.join(ASSETS_DIR, "scaler_ori.pkl"))
         models["scaler_noise"] = joblib.load(os.path.join(ASSETS_DIR, "scaler_noise.pkl"))
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"Error loading models: {e}")
     return models
 
 def load_asset_image(filename):
@@ -1249,7 +1262,7 @@ def page_inference():
                         progress_bar("Confidence (from SVM decision score)", confidence)
 
                     else:
-                        st.info("ℹ️ Models not loaded. This is expected on the Cloud Demo because the SVM models exceed GitHub's 100MB file size limit. To test Live Inference, please run the app locally with the model files present in the `dashboard_assets/` directory.")
+                        st.error(" Models not loaded. The automatic download from GitHub Releases might have failed or timed out.")
                 except Exception as e:
                     st.error(f"Inference error: {e}")
 
