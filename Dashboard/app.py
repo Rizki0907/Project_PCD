@@ -820,6 +820,13 @@ def page_dataset(cfg):
     else:
         st.markdown('<div class="info-box">📂 Place <code>eda_sample_images.png</code> in dashboard_assets to display sample images.</div>', unsafe_allow_html=True)
 
+    section_header("Zoom+Crop Spatial Distortion Samples", "Data Augmentation Visualization")
+    zoom_img = load_asset_image("zoom_crop_samples.png")
+    if zoom_img:
+        st.image(zoom_img, caption="Random Zoom+Crop distortion examples (Data Augmentation)", width='stretch')
+    else:
+        st.markdown('<div class="info-box">📂 Place <code>zoom_crop_samples.png</code> in dashboard_assets to display zoom+crop samples.</div>', unsafe_allow_html=True)
+
 def page_model(cfg):
     st.markdown('<div class="hero-banner" style="padding:1.6rem 2rem;"><h1 style="font-size:1.4rem;"> Model Architecture</h1><p>Two-stage system: SVM classifier with HOG+LBP features (Stage 1) and Convolutional Autoencoder for localization (Stage 2).</p></div>', unsafe_allow_html=True)
 
@@ -1167,12 +1174,6 @@ def page_localization():
     else:
         st.markdown('<div class="info-box">📂 Place <code>autoencoder_bbox_samples.png</code> in dashboard_assets to display samples.</div>', unsafe_allow_html=True)
 
-    section_header("Zoom+Crop Spatial Distortion Samples", "Scenario 5 Visualization")
-    zoom_img = load_asset_image("zoom_crop_samples.png")
-    if zoom_img:
-        st.image(zoom_img, caption="Random Zoom+Crop distortion examples (Scenario 5 test)", width='stretch')
-    else:
-        st.markdown('<div class="info-box">📂 Place <code>zoom_crop_samples.png</code> in dashboard_assets to display zoom+crop samples.</div>', unsafe_allow_html=True)
 
 def page_inference():
     st.markdown('<div class="hero-banner" style="padding:1.6rem 2rem;"><h1 style="font-size:1.4rem;"> Live Inference</h1><p>Upload a casting product image to classify it as Defect or OK using the trained SVM models with HOG + LBP feature extraction.</p></div>', unsafe_allow_html=True)
