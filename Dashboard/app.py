@@ -1,7 +1,7 @@
 """
   Dashboard — Casting Defect Detection (PCD Project)
   Course: Digital Image Processing — Unesa, S1 Data Science
-  Team: Rizki Piji Fathoni (029) & Daffa Ahmad Pangreksa (159)
+  Team: Rizki Piji Fathoni (24031554029) & Daffa Ahmad Pangreksa (24031554159)
 """
 
 import streamlit as st
@@ -653,8 +653,8 @@ def render_sidebar():
         st.markdown("""
         <div style="font-size:0.72rem; color:#4B5563; text-align:center; line-height:1.7;">
             <b style="color:#8B949E;">PCD Project — Unesa 2024</b><br/>
-            Rizki Piji Fathoni · 029<br/>
-            Daffa Ahmad Pangreksa · 159
+            Rizki Piji Fathoni · 24031554029<br/>
+            Daffa Ahmad Pangreksa · 24031554159
         </div>
         """, unsafe_allow_html=True)
 
@@ -754,7 +754,7 @@ def page_overview(cfg):
     col_a, col_b, col_c = st.columns(3)
     infos = [
         ("", "Course", "Digital Image Processing (PCD)", "S1 Data Science — Unesa"),
-        ("", "Team", "Rizki Piji Fathoni (029)<br/>Daffa Ahmad Pangreksa (159)", ""),
+        ("", "Team", "Rizki Piji Fathoni (24031554029)<br/>Daffa Ahmad Pangreksa (24031554159)", ""),
         ("", "Dataset", "Casting Product — Kaggle", "6.633 train · 715 test · 128×128px"),
     ]
     for col, (icon, lbl, main, sub) in zip([col_a, col_b, col_c], infos):
