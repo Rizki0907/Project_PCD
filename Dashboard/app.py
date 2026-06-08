@@ -691,10 +691,6 @@ def page_overview(cfg):
     with c4:
         st.markdown(metric_card("", "Robustness Scenarios", "5", "Cross-test + Spatial", delta_type="neutral", color="purple"), unsafe_allow_html=True)
 
-    st.markdown("<br/>", unsafe_allow_html=True)
-    st.image(load_asset_image("eda_class_distribution.png"), width="stretch")
-    st.image(load_asset_image("eda_pixel_histogram.png"), width="stretch")
-    st.image(load_asset_image("eda_sample_images.png"), width="stretch")
 
     col_left, col_right = st.columns([3, 2])
 
