@@ -841,7 +841,7 @@ def page_model(cfg):
         section_header("Feature Vector Composition", "HOG + LBP")
         col_l, col_r = st.columns([3, 2])
         with col_l:
-            features = {"HOG Features": 3780, "LBP Features": 26}
+            features = {"HOG Features": 8100, "LBP Features": 26}
             total = sum(features.values())
             fig = go.Figure(go.Bar(
                 x=list(features.keys()),
@@ -1199,7 +1199,7 @@ def page_inference():
             <b>Selected:</b><br/>
             Model: <code>{'SVM-Ori' if 'Ori' in model_choice else 'SVM-Noise'}</code><br/>
             Preprocessing: <code>{'clean' if 'Clean' in preprocess_mode else 'noisy'}</code><br/>
-            Feature dims: <code>3,806</code> (HOG + LBP)
+            Feature dims: <code>8,126</code> (HOG + LBP)
         </div>
         """, unsafe_allow_html=True)
 
