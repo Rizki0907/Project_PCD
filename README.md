@@ -6,8 +6,8 @@ Robustness analysis of an industrial casting product defect detection pipeline a
 - **Course**: Digital Image Processing (PCD)
 - **Program**: S1 Data Science, Universitas Negeri Surabaya (Unesa)
 - **Team**: 
-  - Rizki Piji Fathoni (029)
-  - Daffa Ahmad Pangreksa (159)
+  - Rizki Piji Fathoni (24031554029)
+  - Daffa Ahmad Pangreksa (24031554159)
 
 ## Features & Architecture
 
@@ -25,6 +25,7 @@ Robustness analysis of an industrial casting product defect detection pipeline a
 
 ## Repository Structure
 - `029_159_PCD.ipynb`: The main Google Colab notebook containing all training, evaluation, and pipeline extraction scripts.
+- `029_159_Final Report PCD.pdf`: Comprehensive final project report detailing methodologies and findings.
 - `Dashboard/app.py`: Interactive Streamlit dashboard demonstrating dataset statistics, model architecture, robustness findings, and live inference.
 - `dashboard_assets/`: Static image exports, metric data, and visualization assets utilized by the dashboard.
 - `PROPOSAL PROJECT PCD_029_159.pdf`: Original project proposal.
@@ -40,4 +41,4 @@ Robustness analysis of an industrial casting product defect detection pipeline a
    cd Dashboard
    streamlit run app.py
    ```
-*(Note: To test the Live Inference page, ensure the trained `.pkl` and `.h5` model files are placed inside the `dashboard_assets/` directory. These files are excluded from this repository due to size limits).*
+*(Note: The Live Inference page will automatically fetch and lazy-load the required SVM `.pkl` models directly from GitHub Releases to optimize memory and bypass the 100MB repository file size limit).*
