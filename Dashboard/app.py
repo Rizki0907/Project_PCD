@@ -629,7 +629,7 @@ def render_sidebar():
 
         stats = [
             ("", "Best Accuracy", "99.16%"),
-            ("", "Train Images", "13,266"),
+            ("", "Train Images", "6,633"),
             ("", "SVM Kernel", "RBF (C=10)"),
             ("", "BBox Success", "100%"),
         ]
