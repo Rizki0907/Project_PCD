@@ -748,7 +748,7 @@ def page_overview(cfg):
     col_a, col_b, col_c = st.columns(3)
     infos = [
         ("", "Course", "Digital Image Processing (PCD)", "S1 Data Science — Unesa"),
-        ("", "Team", "Rizki Piji Fathoni (029)", "Daffa Ahmad Pangreksa (159)"),
+        ("", "Team", "Rizki Piji Fathoni (029)<br/>Daffa Ahmad Pangreksa (159)", ""),
         ("", "Dataset", "Casting Product — Kaggle", "6.633 train · 715 test · 128×128px"),
     ]
     for col, (icon, lbl, main, sub) in zip([col_a, col_b, col_c], infos):
@@ -825,7 +825,7 @@ def page_model(cfg):
         svm_params = [
             ("", "Kernel", "RBF"),
             ("", "Regularization C", "10"),
-            ("📐", "Gamma", "scale"),
+            ("", "Gamma", "scale"),
         ]
         for col, (icon, lbl, val) in zip([col_a, col_b, col_c], svm_params):
             with col:
@@ -1115,9 +1115,9 @@ def page_localization():
     with c1:
         st.markdown(metric_card("", "Success Rate", "100%", "200/200 images with ≥1 bbox", "up", "success"), unsafe_allow_html=True)
     with c2:
-        st.markdown(metric_card("", "Avg. BBoxes / Image", "6.09", "Average detections per defect", "neutral"), unsafe_allow_html=True)
+        st.markdown(metric_card("", "Avg. BBoxes / Image", "5.91", "Average detections per defect", "neutral"), unsafe_allow_html=True)
     with c3:
-        st.markdown(metric_card("📍", "Max BBoxes (1 image)", "13", "Most complex defect case", "neutral", "purple"), unsafe_allow_html=True)
+        st.markdown(metric_card("", "Max BBoxes (1 image)", "13", "Most complex defect case", "neutral", "purple"), unsafe_allow_html=True)
 
     st.markdown("<br/>", unsafe_allow_html=True)
 
