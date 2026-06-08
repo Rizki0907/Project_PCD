@@ -443,19 +443,21 @@ def load_robustness():
     return pd.DataFrame(data)
 
 @st.cache_resource(show_spinner=False)
-def load_models():
+def load_models(model_key=None, scaler_key=None):
     models = {}
     base_url = "https://github.com/Rizki0907/Project_PCD/releases/download/v1.0.0/"
-    files_to_download = [
-        "svm_ori.pkl", "svm_noise.pkl", "scaler_ori.pkl", "scaler_noise.pkl"
-    ]
+    
+    # Only download the requested model and scaler to prevent Gateway Time-out on Streamlit Cloud
+    if model_key and scaler_key:
+        files_to_download = [f"{model_key}.pkl", f"{scaler_key}.pkl"]
+    else:
+        files_to_download = ["svm_ori.pkl", "svm_noise.pkl", "scaler_ori.pkl", "scaler_noise.pkl"]
     
     import urllib.request
     for filename in files_to_download:
         path = os.path.join(ASSETS_DIR, filename)
         if not os.path.exists(path):
             try:
-                # Provide some visual feedback in the console/logs during download
                 print(f"Downloading {filename} from GitHub Releases...")
                 urllib.request.urlretrieve(base_url + filename, path)
             except Exception as e:
@@ -464,10 +466,14 @@ def load_models():
 
     try:
         import joblib
-        models["svm_ori"] = joblib.load(os.path.join(ASSETS_DIR, "svm_ori.pkl"))
-        models["svm_noise"] = joblib.load(os.path.join(ASSETS_DIR, "svm_noise.pkl"))
-        models["scaler_ori"] = joblib.load(os.path.join(ASSETS_DIR, "scaler_ori.pkl"))
-        models["scaler_noise"] = joblib.load(os.path.join(ASSETS_DIR, "scaler_noise.pkl"))
+        if model_key and scaler_key:
+            models[model_key] = joblib.load(os.path.join(ASSETS_DIR, f"{model_key}.pkl"))
+            models[scaler_key] = joblib.load(os.path.join(ASSETS_DIR, f"{scaler_key}.pkl"))
+        else:
+            models["svm_ori"] = joblib.load(os.path.join(ASSETS_DIR, "svm_ori.pkl"))
+            models["svm_noise"] = joblib.load(os.path.join(ASSETS_DIR, "svm_noise.pkl"))
+            models["scaler_ori"] = joblib.load(os.path.join(ASSETS_DIR, "scaler_ori.pkl"))
+            models["scaler_noise"] = joblib.load(os.path.join(ASSETS_DIR, "scaler_noise.pkl"))
     except Exception as e:
         print(f"Error loading models: {e}")
     return models
@@ -1231,9 +1237,9 @@ def page_inference():
                 st.markdown(f'<div class="metric-label" style="margin-bottom:8px;">Processed ({mode})</div>', unsafe_allow_html=True)
                 st.image(processed_disp, width='stretch')
 
-            with st.spinner("Loading models and running inference..."):
+            with st.spinner("Loading specific model from GitHub Releases (takes ~1 min)..."):
                 try:
-                    models = load_models()
+                    models = load_models(model_key=model_key, scaler_key=scaler_key)
                     scaler = models.get(scaler_key)
                     svm = models.get(model_key)
 
