@@ -1136,7 +1136,7 @@ def page_localization():
 
     st.markdown("""
     <div class="success-box">
-        <b>🎉 100% Success Rate achieved!</b><br/>
+        <b>100% Success Rate achieved!</b><br/>
         Previous threshold (<code>0.4 × max_diff</code>) yielded only 71% success.
         Switching to a <b>dynamic 93rd percentile threshold</b> (<code>max(0.035, np.percentile(diff, 93))</code>)
         ensures at least 7% of pixels are always detected as anomalous, guaranteeing at least one bounding box per defect image.
