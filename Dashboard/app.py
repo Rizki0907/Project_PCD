@@ -604,54 +604,6 @@ def preprocess_for_inference(uploaded_file, mode="clean"):
     features = np.concatenate([hog_feat, lbp_feat]).reshape(1, -1)
     return features, img_display, processed
 
-@st.cache_resource(show_spinner=False)
-def load_autoencoder():
-    try:
-        import tensorflow as tf
-        model_path = os.path.join(ASSETS_DIR, "autoencoder_defect.h5")
-        if os.path.exists(model_path):
-            return tf.keras.models.load_model(model_path, compile=False)
-        else:
-            import urllib.request
-            url = "https://github.com/Rizki0907/Project_PCD/releases/download/v1.0.0/autoencoder_defect.h5"
-            print("Downloading Autoencoder from GitHub Releases...")
-            urllib.request.urlretrieve(url, model_path)
-            return tf.keras.models.load_model(model_path, compile=False)
-    except Exception as e:
-        print(f"Error loading autoencoder: {e}")
-        return None
-
-def localize_defect_autoencoder(img_rgb, model, base_threshold=0.035, min_area=20):
-    gray          = cv2.cvtColor(img_rgb, cv2.COLOR_RGB2GRAY)
-    resized       = cv2.resize(gray, (128, 128))
-    norm          = resized.astype(np.float32) / 255.0
-    tensor        = np.expand_dims(np.expand_dims(norm, axis=-1), axis=0)
-
-    reconstructed = model.predict(tensor, verbose=0)[0, :, :, 0]
-    diff          = cv2.absdiff(norm, reconstructed)
-    diff_blur     = cv2.GaussianBlur(diff, (5, 5), 0)
-
-    pct_thresh    = np.percentile(diff_blur, 93)
-    dyn_thresh    = max(base_threshold, pct_thresh)
-    binary_mask   = (diff_blur > dyn_thresh).astype(np.uint8) * 255
-
-    kernel_open   = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
-    kernel_close  = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (9, 9))
-    binary_mask   = cv2.morphologyEx(binary_mask, cv2.MORPH_OPEN,  kernel_open)
-    binary_mask   = cv2.morphologyEx(binary_mask, cv2.MORPH_CLOSE, kernel_close)
-
-    binary_mask_r = cv2.resize(binary_mask, (img_rgb.shape[1], img_rgb.shape[0]), interpolation=cv2.INTER_NEAREST)
-    contours, _   = cv2.findContours(binary_mask_r, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    boxes         = [cv2.boundingRect(c) for c in contours if cv2.contourArea(c) >= min_area]
-
-    result = img_rgb.copy()
-    for (x, y, w, h) in boxes:
-        cv2.rectangle(result, (x, y), (x + w, y + h), (255, 68, 68), 2)
-        cv2.putText(result, 'DEFECT', (x, max(y - 5, 10)),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255, 68, 68), 1, cv2.LINE_AA)
-
-    return result, diff, reconstructed, binary_mask_r, boxes
-
 def render_sidebar():
     with st.sidebar:
         st.markdown("""
@@ -1311,22 +1263,6 @@ def page_inference():
 
                         st.markdown("<br/>", unsafe_allow_html=True)
                         progress_bar("Confidence (from SVM decision score)", confidence)
-
-                        if prediction == 1:
-                            with st.spinner("Running Autoencoder Localization..."):
-                                ae_model = load_autoencoder()
-                                if ae_model is not None:
-                                    result_img, diff_map, _, _, boxes = localize_defect_autoencoder(img_display, ae_model)
-                                    
-                                    st.markdown("<br/>", unsafe_allow_html=True)
-                                    section_header("Defect Localization", f"Found {len(boxes)} regions")
-                                    col_res, col_diff = st.columns(2)
-                                    with col_res:
-                                        st.image(result_img, caption="Bounding Box Detection", width='stretch')
-                                    with col_diff:
-                                        st.image(diff_map, caption="Difference Map (Error)", width='stretch', clamp=True, channels='GRAY')
-                                else:
-                                    st.error("Autoencoder model not loaded. Please ensure tensorflow-cpu is in requirements.txt.")
 
                     else:
                         st.error(" Models not loaded. The automatic download from GitHub Releases might have failed or timed out.")
